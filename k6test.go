@@ -2,13 +2,24 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"net/http"
+	"os/exec"
+	"unsafe"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello k6")
-	})
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	//k6_only()
+	k6_simple("test.k6.io")
+}
+func k6_only() {
+	out, err := exec.Command("k6", "run", "k6_test.js").Output()
+	print_bytes(out)
+	fmt.Println(err)
+}
+func k6_simple(url string) {
+	out, err := exec.Command("k6", "run", "-e", "MY_HOSTNAME="+url, "k6_env.js").Output()
+	print_bytes(out)
+	fmt.Println(err)
+}
+func print_bytes(b []byte) {
+	fmt.Println(*(*string)(unsafe.Pointer(&b)))
 }
