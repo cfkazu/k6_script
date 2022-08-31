@@ -1,0 +1,3 @@
+test.k6.io,default
+test.k6.io/news.php,news
+test.k6.io/contacts.php,contacts
