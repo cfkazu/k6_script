@@ -1,0 +1,3 @@
+test.k6.io
+test.k6.io/news.php
+test.k6.io/contacts.php

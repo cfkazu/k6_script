@@ -19,7 +19,7 @@ export const options = {
     },
   },
 };
-
+const ary = [""];
 export function contacts() {
   http.get('https://test.k6.io/contacts.php', {
     tags: { my_custom_tag: 'contacts' },
