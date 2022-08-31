@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 	"unsafe"
 )
 
@@ -30,11 +31,15 @@ func k6_filename(filename string) {
 	defer data.Close()
 	scanner := bufio.NewScanner(data)
 	urls := ""
+	tags := ""
 	for scanner.Scan() {
-		urls += scanner.Text() + ","
+		str := strings.Split(scanner.Text(), ",")
+		urls += str[0] + ";"
+		tags += str[1] + ";"
 	}
 	fmt.Println(urls)
-	out, err := exec.Command("k6", "run", "-e", "HOSTNAMES="+urls, "k6_env_multiple.js", "-o", "json=output.json").Output()
+	fmt.Println(tags)
+	out, err := exec.Command("k6", "run", "-e", "HOSTNAMES="+urls, "-e", "TAGS="+tags, "k6_env_multiple.js", "-o", "json=output.json").Output()
 
 	print_bytes(out)
 	fmt.Println(err)
